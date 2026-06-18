@@ -1,0 +1,11 @@
+{
+  "name": "fitstudent",
+  "version": "1.0.0",
+  "description": "AI-powered Personalised Workout & Diet Planner for students",
+  "private": true,
+  "scripts": {
+    "start":   "cd backend && node server.js",
+    "dev":     "cd backend && npx nodemon server.js",
+    "install": "cd backend && npm install"
+  }
+}

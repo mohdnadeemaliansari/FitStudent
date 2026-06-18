@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitStudent — AI Workout & Diet Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">Fit<span>Student</span></div>
+      <div class="nav-status" id="apiStatus">
+        <span class="status-dot"></span>
+        <span class="status-txt">Checking API…</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <header class="hero" id="heroSection">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">AI-Powered · Student-First · Budget-Smart</div>
+      <h1 class="hero-title">Your plan.<br>Your schedule.<br><span>Your results.</span></h1>
+      <p class="hero-sub">No generic routines. No overpriced meal preps. FitStudent builds a workout + diet plan that actually fits hostel life, exam season, and your ₹ budget.</p>
+      <button class="btn-hero" onclick="scrollToForm()">
+        Build my plan <i class="ti ti-arrow-down" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="hero-graphic" aria-hidden="true">
+      <div class="hg-ring hg-r1"></div>
+      <div class="hg-ring hg-r2"></div>
+      <div class="hg-ring hg-r3"></div>
+      <div class="hg-icon"><i class="ti ti-barbell"></i></div>
+    </div>
+  </header>
+
+  <!-- ── MAIN PLANNER ───────────────────────────────────────── -->
+  <main class="planner-wrap" id="plannerSection">
+    <div class="planner-card">
+
+      <!-- Step progress bar -->
+      <div class="step-progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" id="stepProgress">
+        <div class="sp-step active" data-step="0">
+          <div class="sp-circle"><i class="ti ti-user"></i></div>
+          <div class="sp-label">Profile</div>
+        </div>
+        <div class="sp-line"></div>
+        <div class="sp-step" data-step="1">
+          <div class="sp-circle"><i class="ti ti-target"></i></div>
+          <div class="sp-label">Goals</div>
+        </div>
+        <div class="sp-line"></div>
+        <div class="sp-step" data-step="2">
+          <div class="sp-circle"><i class="ti ti-salad"></i></div>
+          <div class="sp-label">Diet</div>
+        </div>
+      </div>
+
+      <!-- ── STEP 0: PROFILE ── -->
+      <section class="form-step" id="step0" aria-label="Step 1: Your profile">
+        <h2 class="step-title">Tell us about yourself</h2>
+
+        <div class="field-group">
+          <h3 class="fg-label"><i class="ti ti-id" aria-hidden="true"></i> Basic info</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="age">Age</label>
+              <input type="number" id="age" name="age" value="20" min="15" max="35" />
+            </div>
+            <div class="field">
+              <label for="height">Height (cm)</label>
+              <input type="number" id="height" name="height" value="170" min="140" max="220" />
+            </div>
+            <div class="field">
+              <label for="weight">Weight (kg)</label>
+              <input type="number" id="weight" name="weight" value="65" min="35" max="200" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Non-binary / prefer not to say</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="activityLevel">Activity level</label>
+              <select id="activityLevel" name="activityLevel">
+                <option value="sedentary">Sedentary (mostly sitting)</option>
+                <option value="light" selected>Lightly active</option>
+                <option value="moderate">Moderately active</option>
+                <option value="very">Very active</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="healthConditions">Health conditions / injuries <span class="opt">(optional)</span></label>
+            <input type="text" id="healthConditions" name="healthConditions" placeholder="e.g. lower back pain, asthma, flat feet…" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <h3 class="fg-label"><i class="ti ti-school" aria-hidden="true"></i> Student setup</h3>
+          <div class="field">
+            <label>Equipment available</label>
+            <div class="chip-group" id="equipChips" data-multi="true">
+              <button class="chip active" data-val="no equipment / bodyweight">No equipment</button>
+              <button class="chip" data-val="resistance bands">Bands</button>
+              <button class="chip" data-val="dumbbells">Dumbbells</button>
+              <button class="chip" data-val="gym access">Gym</button>
+              <button class="chip" data-val="pull-up bar">Pull-up bar</button>
+              <button class="chip" data-val="yoga mat">Yoga mat</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="daysPerWeek">Workout days per week — <span class="slider-live" id="daysLive">3 days</span></label>
+            <input type="range" id="daysPerWeek" name="daysPerWeek" min="1" max="7" step="1" value="3" />
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <span></span>
+          <button class="btn-next" onclick="goStep(1)">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+        </div>
+      </section>
+
+      <!-- ── STEP 1: GOALS ── -->
+      <section class="form-step hidden" id="step1" aria-label="Step 2: Your goals">
+        <h2 class="step-title">What do you want to achieve?</h2>
+
+        <div class="field-group">
+          <h3 class="fg-label"><i class="ti ti-target" aria-hidden="true"></i> Fitness goals</h3>
+          <div class="chip-group" id="goalChips" data-multi="true">
+            <button class="chip active" data-val="lose weight">Lose weight</button>
+            <button class="chip" data-val="build muscle">Build muscle</button>
+            <button class="chip" data-val="improve stamina">Stamina</button>
+            <button class="chip" data-val="reduce stress">Reduce stress</button>
+            <button class="chip" data-val="improve flexibility">Flexibility</button>
+            <button class="chip" data-val="tone up">Tone up</button>
+          </div>
+          <div class="field" style="margin-top:16px">
+            <label>Timeline</label>
+            <div class="chip-group" id="timelineChips" data-multi="false">
+              <button class="chip active" data-val="4 weeks">4 weeks</button>
+              <button class="chip" data-val="8 weeks">8 weeks</button>
+              <button class="chip" data-val="3 months">3 months</button>
+              <button class="chip" data-val="ongoing">Ongoing</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <h3 class="fg-label"><i class="ti ti-clock" aria-hidden="true"></i> Schedule</h3>
+          <div class="field">
+            <label>Preferred time of day</label>
+            <div class="chip-group" id="timeOfDayChips" data-multi="false">
+              <button class="chip active" data-val="morning">Morning</button>
+              <button class="chip" data-val="afternoon">Afternoon</button>
+              <button class="chip" data-val="evening">Evening</button>
+              <button class="chip" data-val="flexible">Flexible</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="sessionDuration">Session duration — <span class="slider-live" id="durLive">30 min</span></label>
+            <input type="range" id="sessionDuration" name="sessionDuration" min="15" max="90" step="5" value="30" />
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="goStep(0)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn-next" onclick="goStep(2)">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+        </div>
+      </section>
+
+      <!-- ── STEP 2: DIET ── -->
+      <section class="form-step hidden" id="step2" aria-label="Step 3: Diet preferences">
+        <h2 class="step-title">How do you eat?</h2>
+
+        <div class="field-group">
+          <h3 class="fg-label"><i class="ti ti-salad" aria-hidden="true"></i> Food preferences</h3>
+          <div class="field">
+            <label>Dietary type</label>
+            <div class="chip-group" id="dietChips" data-multi="false">
+              <button class="chip active" data-val="vegetarian">Vegetarian</button>
+              <button class="chip" data-val="non-vegetarian">Non-veg</button>
+              <button class="chip" data-val="vegan">Vegan</button>
+              <button class="chip" data-val="eggetarian">Eggetarian</button>
+              <button class="chip" data-val="jain">Jain</button>
+              <button class="chip" data-val="any / no restriction">No restriction</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Cuisine preference</label>
+            <div class="chip-group" id="cuisineChips" data-multi="true">
+              <button class="chip active" data-val="Indian">Indian</button>
+              <button class="chip" data-val="South Indian">South Indian</button>
+              <button class="chip" data-val="North Indian">North Indian</button>
+              <button class="chip active" data-val="budget street food">Street food</button>
+              <button class="chip" data-val="Continental">Continental</button>
+              <button class="chip" data-val="Chinese">Chinese</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="allergies">Allergies / foods to avoid <span class="opt">(optional)</span></label>
+            <input type="text" id="allergies" name="allergies" placeholder="e.g. lactose, gluten, peanuts, onion, garlic…" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <h3 class="fg-label"><i class="ti ti-currency-rupee" aria-hidden="true"></i> Budget & living</h3>
+          <div class="field">
+            <label>Daily food budget</label>
+            <div class="chip-group" id="budgetChips" data-multi="false">
+              <button class="chip active" data-val="under ₹100/day (hostel/mess)">Under ₹100</button>
+              <button class="chip" data-val="₹100–200/day">₹100–200</button>
+              <button class="chip" data-val="₹200–400/day">₹200–400</button>
+              <button class="chip" data-val="₹400+/day">₹400+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Living situation</label>
+            <div class="chip-group" id="livingChips" data-multi="false">
+              <button class="chip active" data-val="college hostel with mess">College hostel</button>
+              <button class="chip" data-val="PG with kitchen access">PG with kitchen</button>
+              <button class="chip" data-val="home with family">Home</button>
+              <button class="chip" data-val="shared apartment">Shared apartment</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="goStep(1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
+          <button class="btn-generate" id="generateBtn" onclick="generatePlan()">
+            <i class="ti ti-sparkles" aria-hidden="true"></i> Generate my plan
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ── RESULTS ────────────────────────────────────────────── -->
+  <section class="results-wrap hidden" id="resultsSection" aria-label="Your personalised plan">
+    <div class="results-inner">
+
+      <!-- Profile badges -->
+      <div class="profile-badges" id="profileBadges"></div>
+
+      <!-- Tabs -->
+      <div class="result-tabs" role="tablist">
+        <button class="rtab active" id="tab-workout" role="tab" aria-selected="true"  onclick="showTab('workout')">
+          <i class="ti ti-barbell" aria-hidden="true"></i> Workout
+        </button>
+        <button class="rtab" id="tab-diet" role="tab" aria-selected="false" onclick="showTab('diet')">
+          <i class="ti ti-salad" aria-hidden="true"></i> Diet
+        </button>
+        <button class="rtab" id="tab-tips" role="tab" aria-selected="false" onclick="showTab('tips')">
+          <i class="ti ti-bulb" aria-hidden="true"></i> Tips
+        </button>
+      </div>
+
+      <!-- Content panel -->
+      <div class="result-panel" id="resultPanel" role="tabpanel"></div>
+
+      <!-- Action bar -->
+      <div class="result-actions">
+        <button class="btn-action" onclick="editPlan()">
+          <i class="ti ti-edit" aria-hidden="true"></i> Edit profile
+        </button>
+        <button class="btn-action" id="regenBtn" onclick="regenSection()">
+          <i class="ti ti-refresh" aria-hidden="true"></i> Regenerate this section
+        </button>
+        <button class="btn-action btn-print" onclick="window.print()">
+          <i class="ti ti-printer" aria-hidden="true"></i> Print / Save PDF
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TOAST ──────────────────────────────────────────────── -->
+  <div class="toast hidden" id="toast" role="alert" aria-live="assertive"></div>
+
+  <!-- ── LOADING OVERLAY ────────────────────────────────────── -->
+  <div class="loading-overlay hidden" id="loadingOverlay" role="status" aria-live="polite">
+    <div class="lo-box">
+      <div class="lo-spinner"></div>
+      <div class="lo-msg" id="loMsg">Building your plan…</div>
+      <div class="lo-sub">This takes about 15–20 seconds</div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
